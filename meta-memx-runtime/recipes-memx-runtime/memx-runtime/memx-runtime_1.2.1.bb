@@ -9,7 +9,7 @@ INSANE_SKIP:${PN}-dbg += "already-stripped dev-elf"
 DEPENDS += "util-linux-libuuid"
 
 SRC_URI = "git://github.com/memryx/MxAccl;protocol=https;branch=release"
-SRCREV = 7f9fa8b665d61894d41ff3215b17c9ff1afbe609
+SRCREV = "7f9fa8b665d61894d41ff3215b17c9ff1afbe609"
 
 S = "${WORKDIR}/sources-unpack/git"
 
