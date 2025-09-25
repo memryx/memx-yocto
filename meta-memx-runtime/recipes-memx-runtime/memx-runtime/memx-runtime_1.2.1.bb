@@ -11,7 +11,7 @@ DEPENDS += "util-linux-libuuid"
 SRC_URI = "git://github.com/memryx/MxAccl;protocol=https;branch=release"
 SRCREV = "7f9fa8b665d61894d41ff3215b17c9ff1afbe609"
 
-S = "${WORKDIR}/sources-unpack/git"
+S = "${WORKDIR}/git"
 
 # Inherit the CMake class to use CMake for building.
 inherit cmake
@@ -25,9 +25,8 @@ do_configure:prepend() {
     install -m 0644 ${S}/misc/libmemx/memx.h ${STAGING_INCDIR}/memx/
 
     echo "Copying libmemx for this architecture to source..."
-    ARCHH=$(uname -m)
     install -d ${STAGING_LIBDIR}/
-    install -m 0644 ${S}/misc/libmemx/${ARCHH}/libmemx.so ${STAGING_LIBDIR}/
+    install -m 0644 ${S}/misc/libmemx/${TARGET_ARCH}/libmemx.so ${STAGING_LIBDIR}/
 }
 
 do_install:append() {
@@ -37,9 +36,8 @@ do_install:append() {
     install -m 0644 ${S}/misc/libmemx/memx.h ${D}/usr/include/memx/
 
     echo "Copying libmemx for this architecture to final install..."
-    ARCHH=$(uname -m)
     install -d ${D}/usr/lib/
-    install -m 0644 ${S}/misc/libmemx/${ARCHH}/libmemx.so ${D}/usr/lib/
+    install -m 0644 ${S}/misc/libmemx/${TARGET_ARCH}/libmemx.so ${D}/usr/lib/
 }
 
 

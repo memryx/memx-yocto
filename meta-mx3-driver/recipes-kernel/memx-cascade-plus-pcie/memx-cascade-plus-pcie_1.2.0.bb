@@ -11,7 +11,7 @@ SRC_URI = "git://github.com/memryx/mx3_driver_pub;protocol=https;branch=release"
 SRCREV = "e0e8c1bf46716aa298f09d64c43b4ea71cf3a8d2"
 
 # Use the working directory provided by BitBake
-S = "${WORKDIR}/sources-unpack/git/kdriver/linux/pcie"
+S = "${WORKDIR}/git/kdriver/linux/pcie"
 
 # Inherit the module class to build an out-of-tree kernel module
 inherit module
@@ -29,8 +29,8 @@ MODULE_AUTOLOAD = "memx_cascade_plus_pcie"
 do_install:append() {
   # Create the firmware directory and install the firmware file
   install -d ${D}${nonarch_base_libdir}/firmware
-  install -m 0644 ${WORKDIR}/sources-unpack/git/firmware/cascade.bin ${D}${nonarch_base_libdir}/firmware/
-  install -m 0644 ${WORKDIR}/sources-unpack/git/firmware/cascade_4chips_flash.bin ${D}${nonarch_base_libdir}/firmware/
+  install -m 0644 ${WORKDIR}/git/firmware/cascade.bin ${D}${nonarch_base_libdir}/firmware/
+  install -m 0644 ${WORKDIR}/git/firmware/cascade_4chips_flash.bin ${D}${nonarch_base_libdir}/firmware/
 }
 
 FILES:${PN} += "${nonarch_base_libdir}/firmware/cascade.bin"
