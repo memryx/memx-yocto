@@ -9,15 +9,15 @@ INSANE_SKIP:${PN}-dbg += "already-stripped dev-elf"
 DEPENDS += "util-linux-libuuid"
 
 SRC_URI = "git://github.com/memryx/MxAccl;protocol=https;branch=release"
-SRCREV = "7f9fa8b665d61894d41ff3215b17c9ff1afbe609"
+SRCREV = "8ecd7ba1a780dee0a18cf5163a940c27a8cc76ef"
 
 S = "${WORKDIR}/git"
 
 # Inherit the CMake class to use CMake for building.
 inherit cmake
 
-# disable gRPC daemon + use bitbake's provided CFLAGS instead of our optimized (and potentially wrong) AVX2, etc., flags
-EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=Packaging -DDISABLE_DAEMON=1 -DCMAKE_X86_FLAGS_BASE=0 -DCMAKE_X86_FLAGS_AVX2=0 -DCMAKE_AARCH64_FLAGS=0 -DCMAKE_RISCV_FLAGS=0 "
+# use bitbake's provided CFLAGS instead of our optimized (and potentially wrong) AVX2, etc., flags
+EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=Packaging -DCMAKE_X86_FLAGS_BASE=0 -DCMAKE_X86_FLAGS_AVX2=0 -DCMAKE_AARCH64_FLAGS=0 -DCMAKE_RISCV_FLAGS=0 "
 
 do_configure:prepend() {
     echo "Copying libmemx header file to source..."
@@ -37,30 +37,44 @@ do_install:append() {
 
     echo "Copying libmemx for this architecture to final install..."
     install -d ${D}/usr/lib/
-    install -m 0644 ${S}/misc/libmemx/${TARGET_ARCH}/libmemx.so ${D}/usr/lib/
+    install -m 0644 ${S}/misc/libmemx/${TARGET_ARCH}/libmemx.so.2 ${D}/usr/lib/
+    
+    echo "Copying mxa_manager.conf to final install..."
+    install -d ${D}/etc/memryx/
+    install -m 0644 ${S}/mxa_manager/mxa_manager.conf ${D}/etc/memryx/
 }
 
 
 FILES:${PN} = "${bindir}/acclBench"
+FILES:${PN} += "${bindir}/mxa_manager"
+FILES:${PN} += "${etcdir}/memryx/mxa_manager.conf"
 FILES:${PN} += "${libdir}/libmemx.so"
+FILES:${PN} += "${libdir}/libmx_accl.so.2"
 FILES:${PN} += "${libdir}/libmx_accl.so"
 FILES:${PN}-dev = "${incdir}/memx"
 FILES:${PN}-dev += "${incdir}/memx/memx.h"
 FILES:${PN}-dev += "${incdir}/memx/accl"
-FILES:${PN}-dev += "${incdir}/memx/accl/prepost.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/MxModel.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/daemon.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/dfp.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/MxAccl.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/client.h"
 FILES:${PN}-dev += "${incdir}/memx/accl/DeviceManager.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/dfp.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/DFPRunner.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/messages.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/MxAcclBase.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/MxAccl.h"
 FILES:${PN}-dev += "${incdir}/memx/accl/MxAcclMT.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/prepost.h"
 FILES:${PN}-dev += "${incdir}/memx/accl/utils"
-FILES:${PN}-dev += "${incdir}/memx/accl/utils/mxpack.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/utils/sync_queue.hpp"
-FILES:${PN}-dev += "${incdir}/memx/accl/utils/path.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/blocky_queue.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/cpu_opts.h"
 FILES:${PN}-dev += "${incdir}/memx/accl/utils/errors.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/utils/mxTypes.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/utils/gbf.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/utils/thread_pool.hpp"
 FILES:${PN}-dev += "${incdir}/memx/accl/utils/featureMap.h"
-FILES:${PN}-dev += "${incdir}/memx/accl/utils/general.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/gbf.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/id_tracker.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/locked_var.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/macros.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/mxpack.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/mxTypes.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/path.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/sha512.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/thread_pool.h"
+FILES:${PN}-dev += "${incdir}/memx/accl/utils/uint128.h"

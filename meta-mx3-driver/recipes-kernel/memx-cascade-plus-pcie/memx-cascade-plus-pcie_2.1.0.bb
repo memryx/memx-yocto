@@ -8,7 +8,7 @@ INSANE_SKIP:${PN}-dbg += "buildpaths"
 
 # Example: Pull source from a Git repository. Adjust SRC_URI as needed.
 SRC_URI = "git://github.com/memryx/mx3_driver_pub;protocol=https;branch=release"
-SRCREV = "e0e8c1bf46716aa298f09d64c43b4ea71cf3a8d2"
+SRCREV = "f2e14fc8c1d5e025fa81a1bd959938b90c1a4a6c"
 
 # Use the working directory provided by BitBake
 S = "${WORKDIR}/git/kdriver/linux/pcie"
@@ -31,9 +31,12 @@ do_install:append() {
   install -d ${D}${nonarch_base_libdir}/firmware
   install -m 0644 ${WORKDIR}/git/firmware/cascade.bin ${D}${nonarch_base_libdir}/firmware/
   install -m 0644 ${WORKDIR}/git/firmware/cascade_4chips_flash.bin ${D}${nonarch_base_libdir}/firmware/
+  install -m 0644 ${WORKDIR}/git/firmware/cascade_mini_bar_flash.bin ${D}${nonarch_base_libdir}/firmware/
 }
 
 FILES:${PN} += "${nonarch_base_libdir}/firmware/cascade.bin"
 FILES:${PN} += "${nonarch_base_libdir}/firmware/cascade_4chips_flash.bin"
+FILES:${PN} += "${nonarch_base_libdir}/firmware/cascade_mini_bar_flash.bin"
 FILES:${PN}-dbg += "${nonarch_base_libdir}/firmware/cascade.bin"
 FILES:${PN}-dbg += "${nonarch_base_libdir}/firmware/cascade_4chips_flash.bin"
+FILES:${PN}-dbg += "${nonarch_base_libdir}/firmware/cascade_mini_bar_flash.bin"
