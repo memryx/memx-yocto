@@ -1,0 +1,3 @@
+[submodule "platform-specific_recipes/renesas_rzg3e"]
+	path = platform-specific_recipes/renesas_rzg3e
+	url = https://github.com/memryx/memx-yocto-renesas
